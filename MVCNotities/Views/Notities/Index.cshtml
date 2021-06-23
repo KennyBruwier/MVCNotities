@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MVCNotities.Models.Notitie>
+@*@model IEnumerable<IGrouping<string, Notitie>>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    @*<thead>
+        <tr>
+            <th>
+                @Model.Key
+            </th>
+            <th></th>
+        </tr>
+    </thead>*@
+    <tbody>
+        @foreach (var group in Model.OrderByDescending(n=>n.Datum).GroupBy(g=>g.Datum.ToString("MMMM yyyy")))
+        {
+            <tr>
+                <td>
+                    @group.Key
+                </td>
+            </tr>
+
+            foreach (var item in group)
+            {
+                <tr>
+                    <td>
+                        <p>
+                            <span><strong>@item.Title</strong> - @item.Datum.ToShortDateString() </span>
+                        </p>
+                        <p>
+                            @item.Omschrijving
+                        </p>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+                <tr></tr>
+            }
+        }
+    </tbody>
+</table>
